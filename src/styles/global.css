@@ -139,61 +139,6 @@ a:focus-visible {
   backdrop-filter: blur(2px);
 }
 
-.card > :first-child {
-  margin-top: 0;
-}
-
-.card > :last-child {
-  margin-bottom: 0;
-}
-
-.card-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: rgba(15, 76, 129, 0.08);
-  border: 1px solid rgba(15, 76, 129, 0.15);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-primary);
-  margin-bottom: var(--space-sm);
-  box-shadow: 0 10px 20px rgba(15, 76, 129, 0.12);
-}
-
-.card-icon svg {
-  width: 30px;
-  height: 30px;
-  animation: float 5.5s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card-icon svg {
-    animation: none;
-  }
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-
 .button {
   display: inline-flex;
   align-items: center;
@@ -300,12 +245,6 @@ a:focus-visible {
 
 .contact-form-fields .form-field {
   margin-bottom: 0;
-}
-
-.form-help {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: 0.9rem;
 }
 
 .contact-map {
