@@ -524,6 +524,9 @@ textarea {
   padding: 0.75rem;
   font-size: 1rem;
   font-family: inherit;
+  width: 100%;
+  max-height: 220px;
+  resize: vertical;
 }
 
 input:focus-visible,
