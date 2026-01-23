@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import RichText from '@/components/RichText.astro';
 import ContactForm from '@/components/ContactForm.tsx';
+import LeafletMap from '@/components/LeafletMap.astro';
 import { getPage, getSiteSettings } from '@/lib/content';
 
 const page = await getPage('kontakt-oss');
@@ -13,27 +14,35 @@ const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   <Hero title={page?.hero?.title ?? 'Kontakt oss'} subtitle={page?.hero?.subtitle} />
   <section class="section">
     <div class="container">
+      <div class="card contact-intro" data-animate="fade-up">
+        <h2>Kontakt oss</h2>
+        <p>Fortell oss om behovet ditt, så får du raskt en ryddig tilbakemelding.</p>
+        <RichText content={page?.body ?? ''} />
+      </div>
       <div class="contact-layout">
-        <div class="card contact-info" data-animate="fade-up">
-          <h2>Kontaktinformasjon</h2>
-          <p>Fortell oss om behovet ditt, så får du raskt en ryddig tilbakemelding.</p>
-          <RichText content={page?.body ?? ''} />
-          <div class="contact-details">
-            <p>
-              <strong>Adresse:</strong> <a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a>
-            </p>
-            <p>
-              <strong>Telefon:</strong> <a href={`tel:+47${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
-            </p>
-            <p>
-              <strong>E-post:</strong> <a href={`mailto:${site.email}`}>{site.email}</a>
-            </p>
-          </div>
-        </div>
         <div class="card contact-form" data-animate="fade-up">
           <h2>Send en forespørsel</h2>
           <p>Vi svarer i løpet av arbeidsdagen.</p>
           <ContactForm client:load />
+        </div>
+        <div class="card contact-map" data-animate="fade-up">
+          <h2>Finn oss</h2>
+          <LeafletMap address={site.address} />
+        </div>
+      </div>
+      <div class="card contact-details-bar" data-animate="fade-up">
+        <div>
+          <h3>Adresse</h3>
+          <p><a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a></p>
+        </div>
+        <div>
+          <h3>Kontakt</h3>
+          <p><a href={`tel:+47${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></p>
+          <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+        <div>
+          <h3>Åpningstider</h3>
+          <p>{site.openingHours}</p>
         </div>
       </div>
     </div>
