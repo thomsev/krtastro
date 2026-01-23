@@ -54,7 +54,7 @@ export default function ContactForm() {
   };
 
   return (
-    <form className="card" onSubmit={handleSubmit} noValidate>
+    <form className="contact-form-fields" onSubmit={handleSubmit} noValidate>
       <div className="form-field">
         <label htmlFor="name">Navn</label>
         <input id="name" name="name" value={formState.name} onChange={handleChange} required />
