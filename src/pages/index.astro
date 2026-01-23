@@ -6,18 +6,57 @@ import CardGrid from '@/components/CardGrid.astro';
 import { getPage } from '@/lib/content';
 
 const page = await getPage('hjem');
+const icons = {
+  sanitary: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M20 30v18a8 8 0 0 0 16 0V30" />
+    <path d="M24 30h24a8 8 0 0 0 0-16H24" />
+    <path d="M20 18h4" />
+    <path d="M44 14v8" />
+  </svg>`,
+  industry: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 44h40v8H12z" />
+    <path d="M16 44V26l12 6V26l12 6V26l12 6v12" />
+    <path d="M16 20h8v6h-8z" />
+  </svg>`,
+  plastic: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="24" cy="30" r="10" />
+    <circle cx="40" cy="34" r="10" />
+    <path d="M18 44c4 6 14 10 24 8" />
+  </svg>`,
+  local: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 28L32 12l20 16v24H12z" />
+    <path d="M26 52V36h12v16" />
+  </svg>`,
+  project: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M18 14h28v36H18z" />
+    <path d="M24 22h16" />
+    <path d="M24 30h16" />
+    <path d="M24 38h10" />
+  </svg>`,
+  availability: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="32" cy="32" r="18" />
+    <path d="M32 22v12l8 6" />
+    <path d="M32 10v6" />
+  </svg>`
+};
 const highlights = [
   {
     title: 'Sanitær og VVS',
-    description: 'Komplett levering til bolig og næring med fokus på komfort og energieffektivitet.'
+    description: 'Komplett levering til bolig og næring med fokus på komfort og energieffektivitet.',
+    icon: icons.sanitary,
+    iconLabel: 'Sanitær og VVS ikon'
   },
   {
     title: 'Industrirør og prosess',
-    description: 'Robuste rørsystemer og TIG-sveising for industri og gjenvinningsanlegg.'
+    description: 'Robuste rørsystemer og TIG-sveising for industri og gjenvinningsanlegg.',
+    icon: icons.industry,
+    iconLabel: 'Industrirør og prosess ikon'
   },
   {
     title: 'Plastsveising',
-    description: 'Sertifiserte plastsveisere for krevende installasjoner og dokumentasjon.'
+    description: 'Sertifiserte plastsveisere for krevende installasjoner og dokumentasjon.',
+    icon: icons.plastic,
+    iconLabel: 'Plastsveising ikon'
   }
 ];
 ---
@@ -39,14 +78,20 @@ const highlights = [
     <div class="container">
       <div class="grid cols-3">
         <div class="card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true" set:html={icons.local} />
+          <span class="sr-only">Lokalt forankret ikon</span>
           <h3>Lokalt forankret</h3>
           <p>Vi tar oppdrag over hele Haugalandet og kjenner lokale behov og krav.</p>
         </div>
         <div class="card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true" set:html={icons.project} />
+          <span class="sr-only">Trygg prosjektstyring ikon</span>
           <h3>Trygg prosjektstyring</h3>
           <p>Vi leverer dokumentasjon, fremdriftsplaner og tydelig kommunikasjon.</p>
         </div>
         <div class="card" data-animate="fade-up">
+          <div class="card-icon" aria-hidden="true" set:html={icons.availability} />
+          <span class="sr-only">Tilgjengelighet ikon</span>
           <h3>Tilgjengelighet</h3>
           <p>Vi tilbyr faste priser og raske avklaringer når du trenger oss.</p>
         </div>

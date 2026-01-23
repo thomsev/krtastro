@@ -7,6 +7,10 @@ const { items, title } = Astro.props;
     <div class="grid cols-3">
       {items.map((item) => (
         <article class="card" data-animate="fade-up">
+          {item.icon && (
+            <div class="card-icon" aria-hidden="true" set:html={item.icon} />
+          )}
+          {item.iconLabel && <span class="sr-only">{item.iconLabel}</span>}
           {item.image && <img src={item.image} alt={item.title ?? item.name} loading="lazy" />}
           <h3>{item.title ?? item.name}</h3>
           {item.location && <p><strong>{item.location}</strong></p>}

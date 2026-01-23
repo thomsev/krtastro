@@ -16,10 +16,19 @@ const initialState: FormState = {
   message: ''
 };
 
+const maxWords = 120;
+
+const countWords = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return 0;
+  return trimmed.split(/\s+/).length;
+};
+
 export default function ContactForm() {
   const [formState, setFormState] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const wordCount = countWords(formState.message);
 
   const validate = (): Errors => {
     const nextErrors: Errors = {};
@@ -39,6 +48,14 @@ export default function ContactForm() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
+    if (name === 'message') {
+      const nextWords = countWords(value);
+      if (nextWords > maxWords) {
+        const trimmedWords = value.trim().split(/\s+/).slice(0, maxWords).join(' ');
+        setFormState((prev) => ({ ...prev, [name]: trimmedWords }));
+        return;
+      }
+    }
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -54,7 +71,7 @@ export default function ContactForm() {
   };
 
   return (
-    <form className="card" onSubmit={handleSubmit} noValidate>
+    <form className="contact-form-fields" onSubmit={handleSubmit} noValidate>
       <div className="form-field">
         <label htmlFor="name">Navn</label>
         <input id="name" name="name" value={formState.name} onChange={handleChange} required />
@@ -71,7 +88,15 @@ export default function ContactForm() {
       </div>
       <div className="form-field">
         <label htmlFor="message">Melding</label>
-        <textarea id="message" name="message" rows={5} value={formState.message} onChange={handleChange} required />
+        <textarea
+          id="message"
+          name="message"
+          rows={5}
+          value={formState.message}
+          onChange={handleChange}
+          required
+        />
+        <p className="form-help">Maks {maxWords} ord. {wordCount}/{maxWords} ord brukt.</p>
         {errors.message && <span className="error-text">{errors.message}</span>}
       </div>
       <button className="button" type="submit">Send forespørsel</button>
