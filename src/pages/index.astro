@@ -22,7 +22,13 @@ const highlights = [
 ];
 ---
 <BaseLayout title={page?.title} description={page?.description}>
-  <Hero title={page?.hero?.title ?? 'Karmøy Rørteknikk'} subtitle={page?.hero?.subtitle} cta={{ label: 'Kontakt oss', href: '/kontakt-oss' }} />
+  <Hero
+    title={page?.hero?.title ?? 'Karmøy Rørteknikk'}
+    subtitle={page?.hero?.subtitle}
+    cta={{ label: 'Kontakt oss', href: '/kontakt-oss' }}
+    backgroundImage="/images/welder.jpg"
+    overlay={0.55}
+  />
   <section class="section">
     <div class="container card">
       <RichText content={page?.body ?? ''} />
@@ -32,15 +38,15 @@ const highlights = [
   <section class="section">
     <div class="container">
       <div class="grid cols-3">
-        <div class="card">
+        <div class="card" data-animate="fade-up">
           <h3>Lokalt forankret</h3>
           <p>Vi tar oppdrag over hele Haugalandet og kjenner lokale behov og krav.</p>
         </div>
-        <div class="card">
+        <div class="card" data-animate="fade-up">
           <h3>Trygg prosjektstyring</h3>
           <p>Vi leverer dokumentasjon, fremdriftsplaner og tydelig kommunikasjon.</p>
         </div>
-        <div class="card">
+        <div class="card" data-animate="fade-up">
           <h3>Tilgjengelighet</h3>
           <p>Vi tilbyr faste priser og raske avklaringer når du trenger oss.</p>
         </div>

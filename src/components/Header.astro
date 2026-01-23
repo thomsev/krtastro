@@ -6,8 +6,9 @@ const site = await getSiteSettings();
 ---
 <header>
   <div class="container nav-wrapper">
-    <a class="nav-logo" href="/" aria-label={`${site.name} hjem`}>{site.name}</a>
+    <a class="nav-logo" href="/" aria-label={`${site.name} hjem`}>
+      <img src="/images/logo.svg" alt={`${site.name} logo`} width="140" height="40" />
+    </a>
     <Nav />
-    <a class="button nav-cta" href="tel:+47${site.phone.replace(/\s/g, '')}">Ring oss</a>
   </div>
 </header>

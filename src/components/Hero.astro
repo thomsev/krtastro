@@ -1,16 +1,24 @@
 ---
-const { title, subtitle, cta } = Astro.props;
+const { title, subtitle, cta, backgroundImage, overlay = 0.55 } = Astro.props;
+const heroStyles = [
+  backgroundImage ? `--hero-image: url('${backgroundImage}')` : null,
+  `--hero-overlay: ${overlay}`
+]
+  .filter(Boolean)
+  .join('; ');
 ---
 <section class="section">
   <div class="container">
-    <div class="hero">
-      <h1>{title}</h1>
-      {subtitle && <p>{subtitle}</p>}
-      {cta && (
-        <a class="button" href={cta.href}>
-          {cta.label}
-        </a>
-      )}
+    <div class={`hero ${backgroundImage ? 'hero--image' : ''}`} style={heroStyles}>
+      <div class="hero-content" data-animate="fade-up">
+        <h1>{title}</h1>
+        {subtitle && <p>{subtitle}</p>}
+        {cta && (
+          <a class="button" href={cta.href}>
+            {cta.label}
+          </a>
+        )}
+      </div>
     </div>
   </div>
 </section>

@@ -1,6 +1,7 @@
 ---
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import GsapAnimations from '@/components/GsapAnimations.astro';
 import '@/styles/global.css';
 import { getSiteSettings } from '@/lib/content';
 
@@ -49,6 +50,7 @@ const schema = {
       <slot />
     </main>
     <Footer />
+    <GsapAnimations />
     <a class="mobile-call" href={`tel:+47${site.phone.replace(/\s/g, '')}`} aria-label="Ring oss">Ring oss: {site.phone}</a>
   </body>
 </html>

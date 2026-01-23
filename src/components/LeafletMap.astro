@@ -1,0 +1,100 @@
+---
+const { address } = Astro.props;
+---
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+<div class="leaflet-map" data-address={address} aria-busy="true">
+  <p class="map-fallback">Kartet lastes inn ...</p>
+</div>
+<script is:inline>
+  const mapElements = Array.from(document.querySelectorAll('.leaflet-map'));
+
+  const setFallback = (element, message) => {
+    const fallback = element.querySelector('.map-fallback');
+    if (!fallback) return;
+    fallback.innerHTML = message;
+    element.setAttribute('aria-busy', 'false');
+  };
+
+  const loadLeaflet = () =>
+    new Promise((resolve, reject) => {
+      if (window.L) {
+        resolve(window.L);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.integrity = 'sha256-o9N1j7kPz4J0/Eu9t8b3DqouBZh7R1f0gG/2a2gYwSY=';
+      script.crossOrigin = '';
+      script.async = true;
+      script.onload = () => resolve(window.L);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+  const withTimeout = (promise, timeoutMs) =>
+    Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('timeout')), timeoutMs);
+      })
+    ]);
+
+  const geocodeAddress = async (address) => {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+    try {
+      const response = await withTimeout(
+        fetch(url, {
+          headers: {
+            'Accept-Language': 'no'
+          }
+        }),
+        6000
+      );
+      if (!response.ok) return null;
+      const data = await response.json();
+      if (!data || data.length === 0) return null;
+      return { lat: Number(data[0].lat), lon: Number(data[0].lon) };
+    } catch (error) {
+      return null;
+    }
+  };
+
+  loadLeaflet()
+    .then(async (L) => {
+      for (const element of mapElements) {
+        const address = element.dataset.address;
+        if (!address) {
+          setFallback(element, 'Kartet kunne ikke lastes inn.');
+          continue;
+        }
+        const location = await geocodeAddress(address);
+        if (!location) {
+          setFallback(
+            element,
+            'Kartet kunne ikke lastes inn. <a href="https://www.google.com/maps/search/?api=1&query=' +
+              encodeURIComponent(address) +
+              '" target="_blank" rel="noreferrer">Åpne kart</a>'
+          );
+          continue;
+        }
+        const map = L.map(element, { scrollWheelZoom: false }).setView([location.lat, location.lon], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([location.lat, location.lon]).addTo(map);
+        element.setAttribute('aria-busy', 'false');
+        const fallback = element.querySelector('.map-fallback');
+        if (fallback) fallback.remove();
+      }
+    })
+    .catch(() => {
+      mapElements.forEach((element) => {
+        setFallback(element, 'Kartet kunne ikke lastes inn.');
+      });
+    });
+</script>
