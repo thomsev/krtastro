@@ -13,26 +13,26 @@ const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   <Hero title={page?.hero?.title ?? 'Kontakt oss'} subtitle={page?.hero?.subtitle} />
   <section class="section">
     <div class="container">
-      <div class="grid cols-3">
-        <div class="card" data-animate="fade-up">
+      <div class="contact-layout">
+        <div class="card contact-info" data-animate="fade-up">
           <h2>Kontaktinformasjon</h2>
+          <p>Fortell oss om behovet ditt, så får du raskt en ryddig tilbakemelding.</p>
           <RichText content={page?.body ?? ''} />
-          <p>
-            <strong>Adresse:</strong> <a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a>
-          </p>
-          <p>
-            <strong>Telefon:</strong> <a href={`tel:+47${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
-          </p>
-          <p>
-            <strong>E-post:</strong> <a href={`mailto:${site.email}`}>{site.email}</a>
-          </p>
+          <div class="contact-details">
+            <p>
+              <strong>Adresse:</strong> <a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a>
+            </p>
+            <p>
+              <strong>Telefon:</strong> <a href={`tel:+47${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
+            </p>
+            <p>
+              <strong>E-post:</strong> <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+          </div>
         </div>
-        <div class="card" data-animate="fade-up">
-          <h2>Beskriv behovet ditt</h2>
-          <p>Vi tar kontakt så snart som mulig. Ingen forpliktelser.</p>
-          <p>Trenger du raske avklaringer? Bruk skjemaet, så svarer vi i løpet av arbeidsdagen.</p>
-        </div>
-        <div class="card" data-animate="fade-up">
+        <div class="card contact-form" data-animate="fade-up">
+          <h2>Send en forespørsel</h2>
+          <p>Vi svarer i løpet av arbeidsdagen.</p>
           <ContactForm client:load />
         </div>
       </div>

@@ -172,6 +172,37 @@ a:focus-visible {
   height: 100%;
 }
 
+.contact-layout {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr);
+  align-items: start;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.contact-details {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 .mobile-call {
   position: fixed;
   left: 1rem;
