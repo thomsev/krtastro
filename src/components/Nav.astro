@@ -1,22 +1,92 @@
 ---
-import { navItems } from '@/lib/content/navigation';
+import { navGroups } from '@/config/nav';
+
+const toId = (label: string) => `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
-<nav aria-label="Hovedmeny">
-  <ul>
-    {navItems.map((item) => (
-      <li>
-        <a href={item.slug}>{item.title}</a>
-      </li>
-    ))}
-  </ul>
-  <details>
-    <summary>Meny</summary>
-    <ul>
-      {navItems.map((item) => (
-        <li>
-          <a href={item.slug}>{item.title}</a>
+<nav class="nav" aria-label="Hovedmeny">
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">Meny</button>
+  <ul id="nav-menu" class="nav-list">
+    {navGroups.map((group) =>
+      group.items ? (
+        <li class="nav-item has-dropdown" data-dropdown>
+          <button
+            class="nav-link nav-dropdown-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls={toId(group.label)}
+          >
+            {group.label}
+          </button>
+          <ul id={toId(group.label)} class="nav-dropdown">
+            {group.items.map((item) => (
+              <li>
+                <a class="nav-dropdown-link" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </li>
-      ))}
-    </ul>
-  </details>
+      ) : (
+        <li class="nav-item">
+          <a class="nav-link" href={group.href}>
+            {group.label}
+          </a>
+        </li>
+      )
+    )}
+  </ul>
 </nav>
+
+<script>
+  const nav = document.querySelector('.nav');
+  const toggle = nav?.querySelector('.nav-toggle');
+  const dropdownButtons = nav?.querySelectorAll('.nav-dropdown-toggle');
+
+  const closeDropdowns = (except) => {
+    dropdownButtons?.forEach((button) => {
+      if (button === except) return;
+      button.setAttribute('aria-expanded', 'false');
+      button.closest('[data-dropdown]')?.removeAttribute('data-open');
+    });
+  };
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = nav?.hasAttribute('data-open');
+    if (isOpen) {
+      nav?.removeAttribute('data-open');
+    } else {
+      nav?.setAttribute('data-open', 'true');
+    }
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  dropdownButtons?.forEach((button) => {
+    button.addEventListener('click', () => {
+      const parent = button.closest('[data-dropdown]');
+      const isOpen = parent?.hasAttribute('data-open');
+      closeDropdowns(button);
+      if (isOpen) {
+        parent?.removeAttribute('data-open');
+        button.setAttribute('aria-expanded', 'false');
+      } else {
+        parent?.setAttribute('data-open', 'true');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!nav || nav.contains(event.target)) return;
+    nav.removeAttribute('data-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+    closeDropdowns();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    nav?.removeAttribute('data-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+    closeDropdowns();
+  });
+</script>
