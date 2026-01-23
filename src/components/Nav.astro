@@ -1,0 +1,22 @@
+---
+import { navItems } from '@/lib/content/navigation';
+---
+<nav aria-label="Hovedmeny">
+  <ul>
+    {navItems.map((item) => (
+      <li>
+        <a href={item.slug}>{item.title}</a>
+      </li>
+    ))}
+  </ul>
+  <details>
+    <summary>Meny</summary>
+    <ul>
+      {navItems.map((item) => (
+        <li>
+          <a href={item.slug}>{item.title}</a>
+        </li>
+      ))}
+    </ul>
+  </details>
+</nav>

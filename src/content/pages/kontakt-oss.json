@@ -1,0 +1,10 @@
+{
+  "slug": "kontakt-oss",
+  "title": "Kontakt oss",
+  "description": "Ta kontakt for tilbud, befaring eller spørsmål om våre tjenester.",
+  "hero": {
+    "title": "Kontakt oss",
+    "subtitle": "Vi svarer raskt på forespørsler og avtaler gjerne befaring."
+  },
+  "body": "<p>Ring oss direkte, send e-post eller fyll ut skjemaet nedenfor. Vi tar gjerne en uforpliktende prat om ditt prosjekt.</p>"
+}

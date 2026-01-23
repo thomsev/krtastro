@@ -1,0 +1,54 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import '@/styles/global.css';
+import { getSiteSettings } from '@/lib/content';
+
+const { title, description } = Astro.props;
+const site = await getSiteSettings();
+const pageTitle = title ? `${title} | ${site.name}` : site.name;
+const pageDescription = description ?? site.description;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.karmoy-rorteknikk.no');
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'PlumbingService',
+  name: site.name,
+  description: site.description,
+  url: canonical.origin,
+  telephone: `+47${site.phone.replace(/\s/g, '')}`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.split(',')[0],
+    postalCode: site.address.split(',')[1]?.trim().split(' ')[0],
+    addressLocality: site.address.split(',')[1]?.trim().split(' ')[1],
+    addressCountry: 'NO'
+  },
+  areaServed: site.areaServed
+};
+---
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical.toString()} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical.toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Hopp til innhold</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <a class="mobile-call" href={`tel:+47${site.phone.replace(/\s/g, '')}`} aria-label="Ring oss">Ring oss: {site.phone}</a>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import RichText from '@/components/RichText.astro';
+import CardGrid from '@/components/CardGrid.astro';
+import { getAllPages, getProjects, getReferences, getSuppliers } from '@/lib/content';
+
+export async function getStaticPaths() {
+  const pages = await getAllPages();
+  const filtered = pages.filter((page) => page.slug !== 'hjem' && page.slug !== 'kontakt-oss');
+  return filtered.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const slug = page.slug;
+const projects = slug === 'prosjekter' ? await getProjects() : [];
+const suppliers = slug === 'leverandorer' ? await getSuppliers() : [];
+const references = slug === 'referanser' ? await getReferences() : [];
+---
+<BaseLayout title={page.title} description={page.description}>
+  <Hero title={page.hero?.title ?? page.title} subtitle={page.hero?.subtitle} />
+  <section class="section">
+    <div class="container card">
+      <RichText content={page.body} />
+    </div>
+  </section>
+  {slug === 'prosjekter' && <CardGrid items={projects} title="Utvalgte prosjekter" />}
+  {slug === 'leverandorer' && <CardGrid items={suppliers} title="Våre leverandører" />}
+  {slug === 'referanser' && <CardGrid items={references} title="Utvalgte referanser" />}
+</BaseLayout>

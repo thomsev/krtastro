@@ -1,0 +1,13 @@
+---
+import Nav from './Nav.astro';
+import { getSiteSettings } from '@/lib/content';
+
+const site = await getSiteSettings();
+---
+<header>
+  <div class="container nav-wrapper">
+    <a class="nav-logo" href="/" aria-label={`${site.name} hjem`}>{site.name}</a>
+    <Nav />
+    <a class="button nav-cta" href="tel:+47${site.phone.replace(/\s/g, '')}">Ring oss</a>
+  </div>
+</header>
