@@ -83,6 +83,30 @@ const toId = (label: string) => `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g
     closeDropdowns();
   });
 
+  nav?.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest('a')) {
+      nav.removeAttribute('data-open');
+      toggle?.setAttribute('aria-expanded', 'false');
+      closeDropdowns();
+    }
+  });
+
+  nav?.addEventListener('focusin', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const dropdown = target.closest('[data-dropdown]');
+    if (!dropdown) {
+      closeDropdowns();
+      return;
+    }
+    const activeButton = dropdown.querySelector('.nav-dropdown-toggle');
+    if (activeButton) {
+      closeDropdowns(activeButton);
+    }
+  });
+
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     nav?.removeAttribute('data-open');

@@ -3,10 +3,10 @@ const { items, title } = Astro.props;
 ---
 <section class="section">
   <div class="container">
-    {title && <h2>{title}</h2>}
+    {title && <h2 data-animate="fade-up">{title}</h2>}
     <div class="grid cols-3">
       {items.map((item) => (
-        <article class="card">
+        <article class="card" data-animate="fade-up">
           {item.image && <img src={item.image} alt={item.title ?? item.name} loading="lazy" />}
           <h3>{item.title ?? item.name}</h3>
           {item.location && <p><strong>{item.location}</strong></p>}

@@ -165,6 +165,11 @@ a:focus-visible {
 
 .grid.cols-3 {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+}
+
+.grid.cols-3 > * {
+  height: 100%;
 }
 
 .mobile-call {
@@ -290,7 +295,6 @@ header {
 }
 
 .has-dropdown:focus-within .nav-dropdown,
-.has-dropdown:hover .nav-dropdown,
 .has-dropdown[data-open='true'] .nav-dropdown {
   display: flex;
 }

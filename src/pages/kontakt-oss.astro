@@ -14,7 +14,7 @@ const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   <section class="section">
     <div class="container">
       <div class="grid cols-3">
-        <div class="card">
+        <div class="card" data-animate="fade-up">
           <h2>Kontaktinformasjon</h2>
           <RichText content={page?.body ?? ''} />
           <p>
@@ -27,11 +27,12 @@ const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
             <strong>E-post:</strong> <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
         </div>
-        <div class="card">
+        <div class="card" data-animate="fade-up">
           <h2>Beskriv behovet ditt</h2>
           <p>Vi tar kontakt så snart som mulig. Ingen forpliktelser.</p>
+          <p>Trenger du raske avklaringer? Bruk skjemaet, så svarer vi i løpet av arbeidsdagen.</p>
         </div>
-        <div>
+        <div class="card" data-animate="fade-up">
           <ContactForm client:load />
         </div>
       </div>
