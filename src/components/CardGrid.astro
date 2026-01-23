@@ -1,0 +1,24 @@
+---
+const { items, title } = Astro.props;
+---
+<section class="section">
+  <div class="container">
+    {title && <h2>{title}</h2>}
+    <div class="grid cols-3">
+      {items.map((item) => (
+        <article class="card">
+          {item.image && <img src={item.image} alt={item.title ?? item.name} loading="lazy" />}
+          <h3>{item.title ?? item.name}</h3>
+          {item.location && <p><strong>{item.location}</strong></p>}
+          {item.description && <p>{item.description}</p>}
+          {item.note && <p>{item.note}</p>}
+          {item.website && (
+            <p>
+              <a href={item.website} target="_blank" rel="noreferrer">Besøk nettside</a>
+            </p>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

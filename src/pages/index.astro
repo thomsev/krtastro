@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import RichText from '@/components/RichText.astro';
+import CardGrid from '@/components/CardGrid.astro';
+import { getPage } from '@/lib/content';
+
+const page = await getPage('hjem');
+const highlights = [
+  {
+    title: 'Sanitær og VVS',
+    description: 'Komplett levering til bolig og næring med fokus på komfort og energieffektivitet.'
+  },
+  {
+    title: 'Industrirør og prosess',
+    description: 'Robuste rørsystemer og TIG-sveising for industri og gjenvinningsanlegg.'
+  },
+  {
+    title: 'Plastsveising',
+    description: 'Sertifiserte plastsveisere for krevende installasjoner og dokumentasjon.'
+  }
+];
+---
+<BaseLayout title={page?.title} description={page?.description}>
+  <Hero title={page?.hero?.title ?? 'Karmøy Rørteknikk'} subtitle={page?.hero?.subtitle} cta={{ label: 'Kontakt oss', href: '/kontakt-oss' }} />
+  <section class="section">
+    <div class="container card">
+      <RichText content={page?.body ?? ''} />
+    </div>
+  </section>
+  <CardGrid items={highlights} title="Våre fagområder" />
+  <section class="section">
+    <div class="container">
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>Lokalt forankret</h3>
+          <p>Vi tar oppdrag over hele Haugalandet og kjenner lokale behov og krav.</p>
+        </div>
+        <div class="card">
+          <h3>Trygg prosjektstyring</h3>
+          <p>Vi leverer dokumentasjon, fremdriftsplaner og tydelig kommunikasjon.</p>
+        </div>
+        <div class="card">
+          <h3>Tilgjengelighet</h3>
+          <p>Vi tilbyr faste priser og raske avklaringer når du trenger oss.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

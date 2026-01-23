@@ -1,0 +1,37 @@
+---
+import { getSiteSettings } from '@/lib/content';
+
+const site = await getSiteSettings();
+const phoneLink = `tel:+47${site.phone.replace(/\s/g, '')}`;
+const faxLink = `tel:+47${site.fax.replace(/\s/g, '')}`;
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`;
+---
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <h2>{site.name}</h2>
+      <p>{site.description}</p>
+      <p class="badge">Område: {site.areaServed}</p>
+    </div>
+    <div>
+      <h3>Kontakt</h3>
+      <p>
+        <a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a>
+      </p>
+      <p>
+        <a href={phoneLink}>Mob {site.phone}</a>
+      </p>
+      <p>
+        <a href={faxLink}>Faks {site.fax}</a>
+      </p>
+      <p>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+    </div>
+    <div>
+      <h3>Åpningstider</h3>
+      <p>{site.openingHours}</p>
+      <p>Akutte behov? Ring oss direkte.</p>
+    </div>
+  </div>
+</footer>

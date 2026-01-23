@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Sanitæranlegg for næringsbygg",
+    "description": "Komplett VVS-leveranse med energieffektive løsninger og god dokumentasjon.",
+    "location": "Haugesund",
+    "image": "/images/project-placeholder-1.svg"
+  },
+  {
+    "title": "Industrirør for prosesslinje",
+    "description": "Rørmontasje og TIG-sveising tilpasset krevende produksjonsmiljø.",
+    "location": "Karmøy",
+    "image": "/images/project-placeholder-2.svg"
+  },
+  {
+    "title": "Serviceavtale boligfelt",
+    "description": "Løpende vedlikehold og oppgraderinger for boligsameie.",
+    "location": "Avaldsnes",
+    "image": "/images/project-placeholder-3.svg"
+  }
+]
