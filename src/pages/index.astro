@@ -6,6 +6,8 @@ import CardGrid from '@/components/CardGrid.astro';
 import { getPage } from '@/lib/content';
 
 const page = await getPage('hjem');
+
+// TODO: Add react-icons or custom icons with icon component
 const icons = {
   sanitary: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M20 30v18a8 8 0 0 0 16 0V30" />
@@ -39,6 +41,7 @@ const icons = {
     <path d="M32 10v6" />
   </svg>`
 };
+
 const highlights = [
   {
     title: 'Sanitær og VVS',
@@ -79,19 +82,16 @@ const highlights = [
       <div class="grid cols-3">
         <div class="card" data-animate="fade-up">
           <div class="card-icon" aria-hidden="true" set:html={icons.local} />
-          <span class="sr-only">Lokalt forankret ikon</span>
           <h3>Lokalt forankret</h3>
           <p>Vi tar oppdrag over hele Haugalandet og kjenner lokale behov og krav.</p>
         </div>
         <div class="card" data-animate="fade-up">
           <div class="card-icon" aria-hidden="true" set:html={icons.project} />
-          <span class="sr-only">Trygg prosjektstyring ikon</span>
           <h3>Trygg prosjektstyring</h3>
           <p>Vi leverer dokumentasjon, fremdriftsplaner og tydelig kommunikasjon.</p>
         </div>
         <div class="card" data-animate="fade-up">
           <div class="card-icon" aria-hidden="true" set:html={icons.availability} />
-          <span class="sr-only">Tilgjengelighet ikon</span>
           <h3>Tilgjengelighet</h3>
           <p>Vi tilbyr faste priser og raske avklaringer når du trenger oss.</p>
         </div>

@@ -1,5 +1,8 @@
 ---
+import { classNames } from "@/utils/common";
+
 const { title, subtitle, cta, backgroundImage, overlay = 0.55 } = Astro.props;
+
 const heroStyles = [
   backgroundImage ? `--hero-image: url('${backgroundImage}')` : null,
   `--hero-overlay: ${overlay}`
@@ -9,7 +12,7 @@ const heroStyles = [
 ---
 <section class="section">
   <div class="container">
-    <div class={`hero ${backgroundImage ? 'hero--image' : ''}`} style={heroStyles}>
+    <div class={classNames("hero", backgroundImage && "hero--image")} style={heroStyles}>
       <div class="hero-content" data-animate="fade-up">
         <h1>{title}</h1>
         {subtitle && <p>{subtitle}</p>}

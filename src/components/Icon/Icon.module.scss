@@ -1,0 +1,21 @@
+.icon-wrap {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+
+  max-width: 100%;
+  min-width: 0;
+}
+
+.styled-icon {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 70ms ease;
+  pointer-events: none;
+  overflow: visible !important;
+}
