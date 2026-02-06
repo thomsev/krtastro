@@ -1,11 +1,12 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@/components/Hero.astro';
-import RichText from '@/components/RichText.astro';
-import CardGrid from '@/components/CardGrid.astro';
-import { getPage } from '@/lib/content';
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/Hero.astro";
+import RichText from "@/components/RichText.astro";
+import CardGrid from "@/components/CardGrid.astro";
+import { getPage } from "@/lib/content";
+import { animationGears, HoverLottie } from "@/components/Lottie";
 
-const page = await getPage('hjem');
+const page = await getPage("hjem");
 
 // TODO: Add react-icons or custom icons with icon component
 const icons = {
@@ -39,59 +40,75 @@ const icons = {
     <circle cx="32" cy="32" r="18" />
     <path d="M32 22v12l8 6" />
     <path d="M32 10v6" />
-  </svg>`
+  </svg>`,
 };
 
 const highlights = [
   {
-    title: 'Sanitær og VVS',
-    description: 'Komplett levering til bolig og næring med fokus på komfort og energieffektivitet.',
+    title: "Sanitær og VVS",
+    description:
+      "Komplett levering til bolig og næring med fokus på komfort og energieffektivitet.",
     icon: icons.sanitary,
-    iconLabel: 'Sanitær og VVS ikon'
+    iconLabel: "Sanitær og VVS ikon",
   },
   {
-    title: 'Industrirør og prosess',
-    description: 'Robuste rørsystemer og TIG-sveising for industri og gjenvinningsanlegg.',
+    title: "Industrirør og prosess",
+    description:
+      "Robuste rørsystemer og TIG-sveising for industri og gjenvinningsanlegg.",
     icon: icons.industry,
-    iconLabel: 'Industrirør og prosess ikon'
+    iconLabel: "Industrirør og prosess ikon",
   },
   {
-    title: 'Plastsveising',
-    description: 'Sertifiserte plastsveisere for krevende installasjoner og dokumentasjon.',
+    title: "Plastsveising",
+    description:
+      "Sertifiserte plastsveisere for krevende installasjoner og dokumentasjon.",
     icon: icons.plastic,
-    iconLabel: 'Plastsveising ikon'
-  }
+    iconLabel: "Plastsveising ikon",
+  },
 ];
 ---
+
 <BaseLayout title={page?.title} description={page?.description}>
   <Hero
-    title={page?.hero?.title ?? 'Karmøy Rørteknikk'}
+    title={page?.hero?.title ?? "Karmøy Rørteknikk"}
     subtitle={page?.hero?.subtitle}
-    cta={{ label: 'Kontakt oss', href: '/kontakt-oss' }}
+    cta={{ label: "Kontakt oss", href: "/kontakt-oss" }}
     backgroundImage="/images/welder.jpg"
     overlay={0.55}
   />
   <section class="section">
     <div class="container card">
-      <RichText content={page?.body ?? ''} />
+      <RichText content={page?.body ?? ""} />
     </div>
   </section>
+
   <CardGrid items={highlights} title="Våre fagområder" />
   <section class="section">
     <div class="container">
       <div class="grid cols-3">
         <div class="card" data-animate="fade-up">
-          <div class="card-icon" aria-hidden="true" set:html={icons.local} />
+          <!-- TODO:Change this and use this all over home page-->
+          <HoverLottie animation={animationGears} client:only="react" />
+
           <h3>Lokalt forankret</h3>
-          <p>Vi tar oppdrag over hele Haugalandet og kjenner lokale behov og krav.</p>
+          <p>
+            Vi tar oppdrag over hele Haugalandet og kjenner lokale behov og
+            krav.
+          </p>
         </div>
         <div class="card" data-animate="fade-up">
           <div class="card-icon" aria-hidden="true" set:html={icons.project} />
           <h3>Trygg prosjektstyring</h3>
-          <p>Vi leverer dokumentasjon, fremdriftsplaner og tydelig kommunikasjon.</p>
+          <p>
+            Vi leverer dokumentasjon, fremdriftsplaner og tydelig kommunikasjon.
+          </p>
         </div>
         <div class="card" data-animate="fade-up">
-          <div class="card-icon" aria-hidden="true" set:html={icons.availability} />
+          <div
+            class="card-icon"
+            aria-hidden="true"
+            set:html={icons.availability}
+          />
           <h3>Tilgjengelighet</h3>
           <p>Vi tilbyr faste priser og raske avklaringer når du trenger oss.</p>
         </div>
