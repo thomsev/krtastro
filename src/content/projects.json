@@ -1,20 +1,23 @@
 [
   {
-    "title": "Sanitæranlegg for næringsbygg",
-    "description": "Komplett VVS-leveranse med energieffektive løsninger og god dokumentasjon.",
-    "location": "Haugesund",
-    "image": "/images/project-placeholder-1.svg"
+    "title": "Giske skole energianlegg",
+    "description": "Varmeanlegg, akkumulering, gjenvinning og rørinstallasjoner for kjøling.",
+    "location": "Giske",
+    "image": "/images/generated/technical-plantroom.jpg",
+    "imageNote": "Illustrasjonsbilde"
   },
   {
-    "title": "Industrirør for prosesslinje",
-    "description": "Rørmontasje og TIG-sveising tilpasset krevende produksjonsmiljø.",
-    "location": "Karmøy",
-    "image": "/images/project-placeholder-2.svg"
+    "title": "FMC Biopolymer",
+    "description": "Leveranser til kjøleanlegg og trykkluft, samt ombygging av dampanlegg og reparasjon av dampvekslere.",
+    "location": "Vormedal",
+    "image": "/images/generated/industrial-pipefitter.jpg",
+    "imageNote": "Illustrasjonsbilde"
   },
   {
-    "title": "Serviceavtale boligfelt",
-    "description": "Løpende vedlikehold og oppgraderinger for boligsameie.",
-    "location": "Avaldsnes",
-    "image": "/images/project-placeholder-3.svg"
+    "title": "Helse Fonna",
+    "description": "Isvannsanlegg med oppgitt kapasitet på 2 000 kW.",
+    "location": "Haugalandet",
+    "image": "/images/generated/residential-heating.jpg",
+    "imageNote": "Illustrasjonsbilde"
   }
 ]

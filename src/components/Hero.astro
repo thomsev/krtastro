@@ -1,7 +1,16 @@
 ---
 import { classNames } from "@/utils/common";
 
-const { title, subtitle, cta, backgroundImage, overlay = 0.55 } = Astro.props;
+const {
+  title,
+  subtitle,
+  eyebrow = 'Karmøy Rørteknikk',
+  cta,
+  secondaryCta,
+  backgroundImage,
+  overlay = 0.55,
+  compact = false
+} = Astro.props;
 
 const heroStyles = [
   backgroundImage ? `--hero-image: url('${backgroundImage}')` : null,
@@ -10,18 +19,21 @@ const heroStyles = [
   .filter(Boolean)
   .join('; ');
 ---
-<section class="section">
+<section class={classNames('page-hero', compact && 'page-hero--compact')}>
   <div class="container">
-    <div class={classNames("hero", backgroundImage && "hero--image")} style={heroStyles}>
-      <div class="hero-content" data-animate="fade-up">
-        <h1>{title}</h1>
-        {subtitle && <p>{subtitle}</p>}
-        {cta && (
-          <a class="button" href={cta.href}>
-            {cta.label}
-          </a>
+    <div class={classNames('page-hero-frame', backgroundImage && 'page-hero-frame--image')} style={heroStyles} data-hero>
+      <div class="page-hero-content">
+        <p class="eyebrow eyebrow--light" data-hero-line>{eyebrow}</p>
+        <h1 data-hero-line>{title}</h1>
+        {subtitle && <p class="page-hero-lead" data-hero-line>{subtitle}</p>}
+        {(cta || secondaryCta) && (
+          <div class="hero-actions" data-hero-line>
+            {cta && <a class="button button--light" href={cta.href}>{cta.label} <span aria-hidden="true">↗</span></a>}
+            {secondaryCta && <a class="text-link text-link--light" href={secondaryCta.href}>{secondaryCta.label} <span aria-hidden="true">→</span></a>}
+          </div>
         )}
       </div>
+      <div class="page-hero-index" aria-hidden="true">KR<span>—</span>01</div>
     </div>
   </div>
 </section>

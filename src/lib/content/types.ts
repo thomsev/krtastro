@@ -14,6 +14,7 @@ export type PageContent = {
 
 export type SiteSettings = {
   name: string;
+  legalName: string;
   description: string;
   address: string;
   phone: string;
@@ -21,6 +22,9 @@ export type SiteSettings = {
   email: string;
   areaServed: string;
   openingHours: string;
+  organizationNumber: string;
+  established: number;
+  employeesLabel: string;
 };
 
 export type Project = {
@@ -28,6 +32,7 @@ export type Project = {
   description: string;
   location?: string;
   image?: string;
+  imageNote?: string;
 };
 
 export type Supplier = {

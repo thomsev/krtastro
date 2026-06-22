@@ -27,7 +27,8 @@ const countWords = (value: string) => {
 export default function ContactForm() {
   const [formState, setFormState] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const endpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT;
 
   const wordCount = countWords(formState.message);
 
@@ -66,14 +67,29 @@ export default function ContactForm() {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validate();
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) {
-      setSubmitted(true);
-      console.info("Kontaktforespørsel", formState);
+    if (Object.keys(nextErrors).length > 0) return;
+
+    if (!endpoint) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("submitting");
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+      if (!response.ok) throw new Error("Submission failed");
+      setStatus("success");
       setFormState(initialState);
+    } catch {
+      setStatus("error");
     }
   };
 
@@ -130,10 +146,18 @@ export default function ContactForm() {
             <span className="error-text">{errors.message}</span>
           )}
         </div>
-        <button className="button" type="submit">
-          Send forespørsel
+        <button className="button" type="submit" disabled={status === "submitting"}>
+          {status === "submitting" ? "Sender …" : "Send forespørsel"}
         </button>
-        {submitted && <p>Takk! Vi tar kontakt så snart som mulig.</p>}
+        <div className="form-status" aria-live="polite">
+          {status === "success" && <p>Takk! Forespørselen er sendt. Vi tar kontakt så snart som mulig.</p>}
+          {status === "error" && (
+            <p className="error-text">
+              Skjemaet kunne ikke sendes nå. Ring oss eller send e-post til{" "}
+              <a href="mailto:post@karmoyrorteknikk.no">post@karmoyrorteknikk.no</a>.
+            </p>
+          )}
+        </div>
       </form>
     </>
   );

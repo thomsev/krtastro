@@ -11,7 +11,7 @@ const site = await getSiteSettings();
 const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`;
 ---
 <BaseLayout title={page?.title} description={page?.description}>
-  <Hero title={page?.hero?.title ?? 'Kontakt oss'} subtitle={page?.hero?.subtitle} />
+  <Hero title={page?.hero?.title ?? 'Kontakt oss'} subtitle={page?.hero?.subtitle} backgroundImage="/images/generated/residential-heating.jpg" overlay={0.68} />
   <section class="section">
     <div class="container">
       <div class="card contact-intro" data-animate="fade-up">

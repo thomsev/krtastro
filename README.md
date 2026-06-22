@@ -21,6 +21,16 @@ CONTENT_SOURCE=wordpress WORDPRESS_BASE_URL=https://example.com npm run dev
 - `CONTENT_SOURCE=local` reads from `src/content/`.
 - `CONTENT_SOURCE=wordpress` reads from WordPress REST endpoints. If a request fails, it falls back to local content.
 
+## Contact form
+
+Set a server or managed-form endpoint that accepts a JSON `POST` body:
+
+```bash
+PUBLIC_CONTACT_FORM_ENDPOINT=https://example.com/api/contact
+```
+
+The form intentionally shows a contact fallback instead of a false success message when no endpoint is configured or delivery fails.
+
 ## WordPress expectations
 
 The site looks for WordPress REST endpoints:

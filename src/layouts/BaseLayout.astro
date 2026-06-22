@@ -14,7 +14,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.karmoy-
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'PlumbingService',
-  name: site.name,
+  name: site.legalName,
   description: site.description,
   url: canonical.origin,
   telephone: `+47${site.phone.replace(/\s/g, '')}`,
@@ -25,8 +25,10 @@ const schema = {
     addressLocality: site.address.split(',')[1]?.trim().split(' ')[1],
     addressCountry: 'NO'
   },
-  areaServed: site.areaServed
+  areaServed: site.areaServed,
+  foundingDate: String(site.established)
 };
+const ogImage = new URL('/images/generated/industrial-pipefitter.jpg', canonical.origin).toString();
 ---
 <!doctype html>
 <html lang="no">
@@ -40,8 +42,11 @@ const schema = {
     <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical.toString()} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="nb_NO" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <meta name="theme-color" content="#071c2c" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body>
     <a class="skip-link" href="#main">Hopp til innhold</a>

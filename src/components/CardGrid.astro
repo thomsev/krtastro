@@ -14,11 +14,14 @@ const { items, title } = Astro.props;
             )}
 
             {item.image && (
-              <img
-                src={item.image}
-                alt={item.title ?? item.name}
-                loading="lazy"
-              />
+              <div class="card-media">
+                <img
+                  src={item.image}
+                  alt={item.imageNote ? `Illustrasjon for ${item.title ?? item.name}` : item.title ?? item.name}
+                  loading="lazy"
+                />
+                {item.imageNote && <span class="image-note">{item.imageNote}</span>}
+              </div>
             )}
 
             <h3>{item.title ?? item.name}</h3>

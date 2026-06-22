@@ -3,12 +3,29 @@ import Nav from './Nav.astro';
 import { getSiteSettings } from '@/lib/content';
 
 const site = await getSiteSettings();
+const phoneLink = `tel:+47${site.phone.replace(/\s/g, '')}`;
 ---
-<header>
+<header class="site-header" data-site-header>
+  <div class="header-utility">
+    <div class="container utility-inner">
+      <p>Rørlegger- og industrikompetanse på Haugalandet</p>
+      <a href={phoneLink}>Ring {site.phone}</a>
+    </div>
+  </div>
   <div class="container nav-wrapper">
-    <a class="nav-logo" href="/" aria-label={`${site.name} hjem`}>
-      <img src="/images/logo.svg" alt={`${site.name} logo`} width="140" height="40" />
+    <a class="nav-logo" href="/" aria-label={`${site.name} – til forsiden`}>
+      <img src="/images/logo.svg" alt="" width="263" height="193" />
+      <span>
+        <strong>Karmøy</strong>
+        <small>Rørteknikk</small>
+      </span>
     </a>
-    <Nav />
+    <div class="header-actions">
+      <Nav />
+      <a class="button button--small header-cta" href="/kontakt-oss">
+        Be om tilbud
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
   </div>
 </header>

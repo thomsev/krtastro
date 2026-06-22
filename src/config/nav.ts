@@ -14,9 +14,9 @@ export const navGroups: NavGroup[] = [
   {
     label: 'Tjenester',
     items: [
-      { label: 'Sanitær/VVS', href: '/sanitaer-vvs' },
+      { label: 'VVS, varme og sprinkler', href: '/sanitaer-vvs' },
       { label: 'Plastsveising', href: '/plastsveising' },
-      { label: 'Gass', href: '/gass' },
+      { label: 'Gasskontroll', href: '/gass' },
       { label: 'Gjenvinningsanlegg', href: '/gjenvinningsanlegg' }
     ]
   },

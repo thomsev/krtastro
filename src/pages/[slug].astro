@@ -18,6 +18,14 @@ const heroConfig = pageHeroes[slug];
 const projects = slug === 'prosjekter' ? await getProjects() : [];
 const suppliers = slug === 'leverandorer' ? await getSuppliers() : [];
 const references = slug === 'referanser' ? await getReferences() : [];
+const servicePages = ['sanitaer-vvs', 'plastsveising', 'gass', 'gjenvinningsanlegg'];
+const isService = servicePages.includes(slug);
+const serviceDetails: Record<string, string[]> = {
+  'sanitaer-vvs': ['Sanitær, nybygg og rehabilitering', 'Varme, kjøling og energisentraler', 'Sprinkler og slukkeinstallasjoner'],
+  plastsveising: ['Rørsystemer for industri og prosess', 'Materialrådgivning og metodevalg', 'Kontroll og dokumentasjon'],
+  gass: ['Kontroll av eksisterende anlegg', 'Funksjons- og sikkerhetsvurdering', 'Dokumentasjon og videre tiltak'],
+  gjenvinningsanlegg: ['Prosessrør og tekniske installasjoner', 'Montasje, ombygging og vedlikehold', 'Koordinering med produksjon og øvrige fag']
+};
 ---
 <BaseLayout title={page.title} description={page.description}>
   <Hero
@@ -25,13 +33,57 @@ const references = slug === 'referanser' ? await getReferences() : [];
     subtitle={page.hero?.subtitle}
     backgroundImage={heroConfig?.image}
     overlay={heroConfig?.overlay}
+    cta={isService ? { label: 'Be om tilbud', href: '/kontakt-oss' } : undefined}
+    secondaryCta={isService ? { label: 'Se prosjekter', href: '/prosjekter' } : undefined}
   />
-  <section class="section">
-    <div class="container card">
-      <RichText content={page.body} />
+  <section class="section section--intro">
+    <div class="container intro-grid">
+      <div data-animate="fade-up">
+        <p class="eyebrow">{isService ? 'Kompetanse og gjennomføring' : page.title}</p>
+        <h2>{page.hero?.subtitle ?? page.title}</h2>
+      </div>
+      <div class="intro-copy" data-animate="fade-left">
+        <RichText content={page.body} />
+        <a class="text-link" href="/kontakt-oss">Snakk med oss <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
+  {isService && (
+    <section class="section services-section">
+      <div class="container">
+        <div class="section-heading" data-animate="fade-up">
+          <div><p class="eyebrow">Dette hjelper vi med</p><h2>En komplett og ryddig leveranse.</h2></div>
+          <p>Vi tilpasser løsning og gjennomføring til anlegget, bruken og kravene prosjektet stiller.</p>
+        </div>
+        <div class="grid cols-3" data-stagger>
+          {serviceDetails[slug].map((detail, index) => (
+            <article class="card" data-stagger-item>
+              <span class="eyebrow">0{index + 1}</span>
+              <h3>{detail}</h3>
+              <p>Faglig vurdering, tydelig koordinering og dokumentert utførelse fra vårt erfarne team.</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  {slug === 'om-oss' && (
+    <section class="facts-strip facts-strip--page">
+      <div class="container facts-grid" data-stagger>
+        <div data-stagger-item><strong>2008</strong><span>Etablert</span></div>
+        <div data-stagger-item><strong>30+</strong><span>Medarbeidere</span></div>
+        <div data-stagger-item><strong>Klasse 3</strong><span>Utførende godkjenning</span></div>
+        <div data-stagger-item><strong>2</strong><span>Lærlinger registrert</span></div>
+      </div>
+    </section>
+  )}
   {slug === 'prosjekter' && <CardGrid items={projects} title="Utvalgte prosjekter" />}
   {slug === 'leverandorer' && <CardGrid items={suppliers} title="Våre leverandører" />}
   {slug === 'referanser' && <CardGrid items={references} title="Utvalgte referanser" />}
+  <section class="section final-cta-section">
+    <div class="container final-cta" data-animate="fade-up">
+      <div><p class="eyebrow eyebrow--light">Neste steg</p><h2>Har du et prosjekt vi bør se på?</h2></div>
+      <div><p>Fortell kort om behovet, så tar vi en konkret prat om løsning og fremdrift.</p><a class="button button--light" href="/kontakt-oss">Ta kontakt <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </section>
 </BaseLayout>

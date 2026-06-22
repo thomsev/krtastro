@@ -3,35 +3,43 @@ import { getSiteSettings } from '@/lib/content';
 
 const site = await getSiteSettings();
 const phoneLink = `tel:+47${site.phone.replace(/\s/g, '')}`;
-const faxLink = `tel:+47${site.fax.replace(/\s/g, '')}`;
 const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`;
+const year = new Date().getFullYear();
 ---
-<footer>
+<footer class="site-footer">
+  <div class="container footer-intro">
+    <p class="eyebrow eyebrow--light">Klar for å starte?</p>
+    <div>
+      <h2>La oss finne en solid løsning.</h2>
+      <a class="button button--light" href="/kontakt-oss">Fortell om prosjektet <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
   <div class="container footer-grid">
-    <div>
-      <img class="footer-logo" src="/images/logo.svg" alt={`${site.name} logo`} width="160" height="48" />
+    <div class="footer-brand">
+      <a class="nav-logo nav-logo--footer" href="/" aria-label={`${site.name} – til forsiden`}>
+        <img src="/images/logo.svg" alt="" width="263" height="193" />
+        <span><strong>Karmøy</strong><small>Rørteknikk</small></span>
+      </a>
       <p>{site.description}</p>
-      <p class="badge">Område: {site.areaServed}</p>
     </div>
-    <div>
+    <div class="footer-links">
+      <h3>Tjenester</h3>
+      <a href="/sanitaer-vvs">VVS, varme og sprinkler</a>
+      <a href="/plastsveising">Plastsveising</a>
+      <a href="/gass">Gasskontroll</a>
+      <a href="/gjenvinningsanlegg">Gjenvinningsanlegg</a>
+    </div>
+    <div class="footer-links">
       <h3>Kontakt</h3>
-      <p>
-        <a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a>
-      </p>
-      <p>
-        <a href={phoneLink}>Mob {site.phone}</a>
-      </p>
-      <p>
-        <a href={faxLink}>Faks {site.fax}</a>
-      </p>
-      <p>
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-      </p>
+      <a href={phoneLink}>{site.phone}</a>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={mapLink} target="_blank" rel="noreferrer">{site.address}</a>
+      <span>{site.openingHours}</span>
+      <span>Org.nr. {site.organizationNumber}</span>
     </div>
-    <div>
-      <h3>Åpningstider</h3>
-      <p>{site.openingHours}</p>
-      <p>Akutte behov? Ring oss direkte.</p>
-    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {year} {site.name}</span>
+    <span>Fagarbeid. Dokumentasjon. Forutsigbarhet.</span>
   </div>
 </footer>
