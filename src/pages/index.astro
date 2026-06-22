@@ -68,7 +68,7 @@ const process = [
           <span><i aria-hidden="true"></i> Sentralt godkjent foretak</span>
         </div>
       </div>
-      <div class="home-hero-media" data-hero-line>
+      <div class="home-hero-media">
         <div class="hero-image-wrap">
           <img src="/images/generated/industrial-pipefitter.jpg" alt="Illustrasjon av industrirørlegger i et moderne teknisk anlegg" width="1536" height="1024" fetchpriority="high" data-parallax />
         </div>
@@ -117,7 +117,7 @@ const process = [
       <div class="services-grid" data-stagger>
         {services.map((service) => (
           <a class={`service-card ${service.className}`} href={service.href} data-stagger-item data-tilt>
-            {service.className.includes('image') && <img src="/images/generated/technical-plantroom.jpg" alt="Illustrasjon av moderne rørinstallasjon i teknisk anlegg" width="1536" height="1024" loading="lazy" />}
+            {service.className.includes('image') && <img src="/images/generated/technical-plantroom.jpg" alt="Illustrasjon av moderne rørinstallasjon i teknisk anlegg" width="1536" height="1024" loading="lazy" data-image-reveal />}
             <div class="service-card-top"><span>{service.number}</span><i aria-hidden="true">↗</i></div>
             <div><h3>{service.title}</h3><p>{service.description}</p></div>
           </a>
@@ -126,30 +126,87 @@ const process = [
     </div>
   </section>
 
-  <section class="section expertise-section">
-    <div class="container expertise-grid">
-      <div class="expertise-visual" data-animate="fade-up">
-        <div class="orbit orbit--one" aria-hidden="true"></div>
-        <div class="orbit orbit--two" aria-hidden="true"></div>
-        <HoverLottie
-          animation={animationGears}
-          autoplay={true}
-          loop={true}
-          client:only="react"
-          containerProps={{ className: 'expertise-lottie' }}
-        />
-        <p>Planlegging <span>→</span> utførelse <span>→</span> dokumentasjon</p>
+  <section id="systemforstaelse" class="systems-story" data-systems-story aria-labelledby="systems-story-title">
+    <div class="systems-stage">
+      <div class="systems-background" data-systems-image>
+        <img src="/images/generated/technical-plantroom-hq.jpg" alt="Illustrasjon av et moderne teknisk anlegg med varme- og kjølerør" width="1536" height="1024" loading="eager" fetchpriority="high" />
       </div>
-      <div class="expertise-copy" data-animate="fade-left">
-        <p class="eyebrow eyebrow--light">Teknisk kompetanse</p>
-        <h2>Detaljene avgjør om løsningen varer.</h2>
-        <p>God rørteknikk handler om mer enn montasje. Prosjektering, materialvalg, koordinering, sveiseprosedyrer og dokumentasjon må spille sammen.</p>
-        <ul class="check-list">
-          <li><span>01</span>Prosjektering i tiltaksklasse 2</li>
-          <li><span>02</span>Utførelse i tiltaksklasse 3</li>
-          <li><span>03</span>Godkjent lærebedrift i rørleggerfaget</li>
-        </ul>
-        <a class="button button--light" href="/kontakt-oss">Diskuter en løsning <span aria-hidden="true">↗</span></a>
+      <div class="systems-scrim" aria-hidden="true"></div>
+      <svg class="systems-schematic" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="system-path-rail" d="M-80 180 H250 Q320 180 320 250 V380 Q320 450 390 450 H672" />
+        <path class="system-path-rail" d="M1520 300 H1090 Q1020 300 1020 370 V380 Q1020 450 950 450 H768" />
+        <path class="system-path-rail" d="M720 -80 V402" />
+        <path class="system-path-glow" data-system-path-glow d="M-80 180 H250 Q320 180 320 250 V380 Q320 450 390 450 H672" />
+        <path class="system-path-glow" data-system-path-glow d="M1520 300 H1090 Q1020 300 1020 370 V380 Q1020 450 950 450 H768" />
+        <path class="system-path-glow" data-system-path-glow d="M720 -80 V402" />
+        <path class="system-path" data-system-path d="M-80 180 H250 Q320 180 320 250 V380 Q320 450 390 450 H672" />
+        <path class="system-path" data-system-path d="M1520 300 H1090 Q1020 300 1020 370 V380 Q1020 450 950 450 H768" />
+        <path class="system-path" data-system-path d="M720 -80 V402" />
+        <g class="flow-node" data-flow-node transform="translate(-80 180)">
+          <circle class="flow-node__pulse" data-flow-pulse r="10" />
+          <circle class="flow-node__ring" r="13" />
+          <circle class="flow-node__core" r="7" />
+        </g>
+        <g class="flow-node" data-flow-node transform="translate(1520 300)">
+          <circle class="flow-node__pulse" data-flow-pulse r="10" />
+          <circle class="flow-node__ring" r="13" />
+          <circle class="flow-node__core" r="7" />
+        </g>
+        <g class="flow-node" data-flow-node transform="translate(720 -80)">
+          <circle class="flow-node__pulse" data-flow-pulse r="10" />
+          <circle class="flow-node__ring" r="13" />
+          <circle class="flow-node__core" r="7" />
+        </g>
+        <g class="system-hub" data-system-hub transform="translate(720 450)">
+          <path class="system-hub__connectors" d="M-48 0 H-18 M48 0 H18 M0 -48 V-18" />
+          <circle class="system-hub__wave" data-hub-wave r="28" />
+          <circle class="system-hub__orbit system-hub__orbit--outer" data-hub-ring r="38" />
+          <circle class="system-hub__orbit system-hub__orbit--inner" data-hub-ring r="28" />
+          <circle class="system-hub__core" r="17" />
+          <circle class="system-hub__signal" r="5" />
+        </g>
+      </svg>
+      <div class="container systems-content">
+        <div class="systems-heading">
+          <p class="eyebrow eyebrow--light">Systemforståelse</p>
+          <h2 id="systems-story-title"><span>Alt henger</span><br /><span>sammen.</span></h2>
+          <p>De beste tekniske anleggene oppleves enkle. Bak ligger presis prosjektering, koordinering og kontroll.</p>
+        </div>
+        <div class="systems-hud" data-systems-hud aria-hidden="true">
+          <div class="systems-hud-ring">
+            <span class="systems-hud-index">KRT<br />08</span>
+            <HoverLottie
+              animation={animationGears}
+              autoplay={true}
+              loop={true}
+              client:only="react"
+              containerProps={{ className: 'systems-lottie' }}
+            />
+          </div>
+          <p>Teknisk koordinering</p>
+        </div>
+        <div class="system-label system-label--heat" data-system-label aria-hidden="true"><i></i><span>Varmekrets</span><b>62°</b></div>
+        <div class="system-label system-label--flow" data-system-label aria-hidden="true"><i></i><span>Vannbalanse</span><b>OK</b></div>
+        <div class="system-label system-label--safe" data-system-label aria-hidden="true"><i></i><span>Trykk</span><b>4.2 BAR</b></div>
+        <div class="systems-points" data-systems-points>
+          <article>
+            <span>01</span>
+            <h3>Energi i balanse</h3>
+            <p>Varme, kjøling og vannbalansering dimensjonert som ett system.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Sikkerhet bygget inn</h3>
+            <p>Sprinkler, kontroll og dokumentasjon integrert i leveransen.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Drift som varer</h3>
+            <p>Tilgjengelige komponenter og løsninger som er enkle å vedlikeholde.</p>
+          </article>
+        </div>
+        <div class="systems-progress" aria-hidden="true"><span data-systems-progress></span></div>
+        <div class="systems-coordinate" aria-hidden="true">59.28° N&nbsp;&nbsp; / &nbsp;&nbsp;5.30° E</div>
       </div>
     </div>
   </section>
@@ -164,7 +221,7 @@ const process = [
         {projects.map((project, index) => (
           <article class={`project-card ${index === 0 ? 'project-card--featured' : ''}`} data-stagger-item>
             <div class="project-image">
-              <img src={project.image} alt={`Illustrasjon for ${project.title}`} width="1536" height="1024" loading="lazy" />
+              <img src={project.image} alt={`Illustrasjon for ${project.title}`} width="1536" height="1024" loading="lazy" data-image-reveal />
               {project.imageNote && <span class="image-note">{project.imageNote}</span>}
             </div>
             <div class="project-meta"><span>{project.location}</span><span>0{index + 1}</span></div>

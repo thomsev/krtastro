@@ -11,6 +11,8 @@ Primary audience: homeowners, commercial customers, industrial customers, contra
 - [x] Researched public company facts and documented sources in `COMPANY_RESEARCH.md`.
 - [x] Expanded company, approval, apprenticeship, capability, and project-reference content from public sources.
 - [x] Generated and optimized three original illustration images; all project usage is visibly labelled as illustration.
+- [x] Added a signature GSAP scroll experience with animated technical schematics, layered plant-room imagery, and responsive fallbacks.
+- [x] Refined the signature sequence with path-bound flow tracers, layered pulse feedback, a higher-quality background encode, and a lower-loss parallax zoom.
 - [x] Added a reproducible Browserslist override and restored clean type/build checks.
 - [ ] Obtain company approval for facts, project naming, current certifications, contacts, and operating hours.
 - [ ] Replace generated project imagery with approved authentic company photography.

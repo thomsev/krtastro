@@ -1,11 +1,12 @@
 <script>
   import gsap from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!reducedMotion) {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
     gsap.from('[data-hero-line]', {
       opacity: 0,
@@ -14,6 +15,14 @@
       stagger: 0.12,
       ease: 'power3.out',
       clearProps: 'transform'
+    });
+
+    gsap.from('.hero-image-wrap', {
+      clipPath: 'inset(0 0 100% 0 round 220px 26px 26px 26px)',
+      duration: 1.05,
+      delay: 0.08,
+      ease: 'power4.inOut',
+      clearProps: 'clipPath'
     });
 
     gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
@@ -51,6 +60,112 @@
       });
     });
 
+    gsap.utils.toArray<HTMLElement>('[data-image-reveal]').forEach((image) => {
+      gsap.fromTo(image,
+        { clipPath: 'inset(0 0 100% 0)', scale: 1.12 },
+        {
+          clipPath: 'inset(0 0 0% 0)',
+          scale: 1,
+          duration: 1.1,
+          ease: 'power4.inOut',
+          clearProps: 'clipPath,transform',
+          scrollTrigger: { trigger: image, start: 'top 88%', once: true }
+        }
+      );
+    });
+
+    const systemsStory = document.querySelector<HTMLElement>('[data-systems-story]');
+    if (systemsStory && window.matchMedia('(min-width: 900px)').matches) {
+      const systemPaths = systemsStory.querySelectorAll<SVGPathElement>('[data-system-path]');
+      const systemGlowPaths = systemsStory.querySelectorAll<SVGPathElement>('[data-system-path-glow]');
+      const flowNodes = Array.from(systemsStory.querySelectorAll<SVGGElement>('[data-flow-node]'));
+      const systemPoints = Array.from(systemsStory.querySelectorAll<HTMLElement>('[data-systems-points] article'));
+      const systemProgress = systemsStory.querySelector<HTMLElement>('[data-systems-progress]');
+      const systemsHud = systemsStory.querySelector<HTMLElement>('[data-systems-hud]');
+      systemPaths.forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      });
+      systemGlowPaths.forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      });
+      flowNodes.forEach((node) => node.removeAttribute('transform'));
+
+      gsap.to('[data-flow-pulse]', {
+        scale: 2.25,
+        opacity: 0,
+        duration: 1.45,
+        repeat: -1,
+        ease: 'power2.out',
+        transformOrigin: 'center'
+      });
+
+      gsap.to('[data-hub-ring]', {
+        rotation: (index) => index === 0 ? 360 : -360,
+        duration: (index) => index === 0 ? 16 : 11,
+        repeat: -1,
+        ease: 'none',
+        svgOrigin: '0 0'
+      });
+
+      systemPoints[0]?.setAttribute('data-active', 'true');
+
+      gsap.from('.systems-heading > *', {
+        opacity: 0,
+        y: 36,
+        duration: 0.9,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: systemsStory, start: 'top 72%', once: true }
+      });
+
+      const systemsTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: systemsStory,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1,
+          onUpdate: (self) => {
+            if (systemProgress) gsap.set(systemProgress, { scaleY: self.progress });
+            const activeIndex = Math.min(systemPoints.length - 1, Math.floor(self.progress * systemPoints.length));
+            systemPoints.forEach((point, index) => point.toggleAttribute('data-active', index === activeIndex));
+          }
+        }
+      });
+
+      systemsTimeline
+        .fromTo('[data-systems-image]', { scale: 1 }, { scale: 1.055, ease: 'none' }, 0)
+        .to(systemGlowPaths, { strokeDashoffset: 0, duration: 0.66, ease: 'none' }, 0.08)
+        .to(systemPaths, { strokeDashoffset: 0, duration: 0.66, ease: 'none' }, 0.08)
+        .from('[data-systems-hud]', { scale: 0.72, rotation: -14, opacity: 0, duration: 0.3, ease: 'power3.out' }, 0.12)
+        .from('[data-system-label]', { scale: 0.9, y: 16, opacity: 0, duration: 0.2, stagger: 0.08, ease: 'power2.out' }, 0.25)
+        .from('[data-systems-points] article', { y: 42, duration: 0.24, stagger: 0.12, ease: 'power3.out' }, 0.32)
+        .from('.systems-coordinate', { opacity: 0, duration: 0.2 }, 0.72)
+        .from('[data-system-hub]', { scale: 0, opacity: 0, duration: 0.14, ease: 'back.out(2.4)', transformOrigin: 'center' }, 0.71)
+        .to('[data-hub-wave]', { scale: 3.2, opacity: 0, duration: 0.18, ease: 'power2.out', transformOrigin: 'center' }, 0.76);
+
+      flowNodes.forEach((node, index) => {
+        const path = systemPaths[index];
+        if (!path) return;
+        systemsTimeline.to(node, {
+          motionPath: { path, align: path, alignOrigin: [0.5, 0.5] },
+          duration: 0.66,
+          ease: 'none'
+        }, 0.08);
+      });
+
+      if (systemsHud) {
+        const moveHudX = gsap.quickTo(systemsHud, 'x', { duration: 0.8, ease: 'power3.out' });
+        const moveHudY = gsap.quickTo(systemsHud, 'y', { duration: 0.8, ease: 'power3.out' });
+        systemsStory.addEventListener('pointermove', (event) => {
+          moveHudX((event.clientX / window.innerWidth - 0.5) * 18);
+          moveHudY((event.clientY / window.innerHeight - 0.5) * 18);
+        });
+        systemsStory.addEventListener('pointerleave', () => { moveHudX(0); moveHudY(0); });
+      }
+    }
+
     document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
       const rotateX = gsap.quickTo(card, 'rotationX', { duration: 0.45, ease: 'power3.out' });
       const rotateY = gsap.quickTo(card, 'rotationY', { duration: 0.45, ease: 'power3.out' });
@@ -68,6 +183,15 @@
       ScrollTrigger.create({
         start: 80,
         onUpdate: (self) => header.toggleAttribute('data-condensed', self.scroll() > 80)
+      });
+    }
+
+    const pageProgress = document.querySelector<HTMLElement>('[data-page-progress]');
+    if (pageProgress) {
+      ScrollTrigger.create({
+        start: 0,
+        end: 'max',
+        onUpdate: (self) => gsap.set(pageProgress, { scaleX: self.progress })
       });
     }
   }
