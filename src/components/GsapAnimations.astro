@@ -79,9 +79,14 @@
       const systemPaths = systemsStory.querySelectorAll<SVGPathElement>('[data-system-path]');
       const systemGlowPaths = systemsStory.querySelectorAll<SVGPathElement>('[data-system-path-glow]');
       const flowNodes = Array.from(systemsStory.querySelectorAll<SVGGElement>('[data-flow-node]'));
+      const systemPackets = Array.from(systemsStory.querySelectorAll<SVGCircleElement>('[data-system-packet]'));
       const systemPoints = Array.from(systemsStory.querySelectorAll<HTMLElement>('[data-systems-points] article'));
       const systemProgress = systemsStory.querySelector<HTMLElement>('[data-systems-progress]');
       const systemsHud = systemsStory.querySelector<HTMLElement>('[data-systems-hud]');
+      const phaseLabels = Array.from(systemsStory.querySelectorAll<HTMLElement>('[data-phase]'));
+      const telemetryTemperature = systemsStory.querySelector<HTMLElement>('[data-telemetry="temperature"]');
+      const telemetryLoad = systemsStory.querySelector<HTMLElement>('[data-telemetry="load"]');
+      const telemetryPressure = systemsStory.querySelector<HTMLElement>('[data-telemetry="pressure"]');
       systemPaths.forEach((path) => {
         const length = path.getTotalLength();
         gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
@@ -91,6 +96,20 @@
         gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
       });
       flowNodes.forEach((node) => node.removeAttribute('transform'));
+      systemPackets.forEach((packet) => packet.removeAttribute('transform'));
+
+      systemPackets.forEach((packet, index) => {
+        const route = Number(packet.dataset.route ?? 0);
+        const path = systemPaths[route];
+        if (!path) return;
+        gsap.to(packet, {
+          motionPath: { path, align: path, alignOrigin: [0.5, 0.5] },
+          duration: 3.2 + route * 0.22,
+          delay: (index % 2) * 1.55 + route * 0.12,
+          repeat: -1,
+          ease: 'none'
+        });
+      });
 
       gsap.to('[data-flow-pulse]', {
         scale: 2.25,
@@ -110,6 +129,9 @@
       });
 
       systemPoints[0]?.setAttribute('data-active', 'true');
+      phaseLabels[0]?.setAttribute('data-active', 'true');
+      const energyState = { value: 0 };
+      let energyReset: gsap.core.Tween | null = null;
 
       gsap.from('.systems-heading > *', {
         opacity: 0,
@@ -130,20 +152,55 @@
             if (systemProgress) gsap.set(systemProgress, { scaleY: self.progress });
             const activeIndex = Math.min(systemPoints.length - 1, Math.floor(self.progress * systemPoints.length));
             systemPoints.forEach((point, index) => point.toggleAttribute('data-active', index === activeIndex));
+            const phaseIndex = self.progress < 0.32 ? 0 : self.progress < 0.76 ? 1 : 2;
+            phaseLabels.forEach((label, index) => label.toggleAttribute('data-active', index === phaseIndex));
+            systemsStory.dataset.systemState = String(phaseIndex);
+            const energy = Math.min(1, Math.abs(self.getVelocity()) / 2400);
+            energyState.value = energy;
+            systemsStory.style.setProperty('--energy-blur', `${2 + energy * 10}px`);
+            systemsStory.style.setProperty('--energy-alpha', String(0.76 + energy * 0.24));
+            energyReset?.kill();
+            energyReset = gsap.to(energyState, {
+              value: 0,
+              delay: 0.06,
+              duration: 0.45,
+              ease: 'power2.out',
+              onUpdate: () => {
+                systemsStory.style.setProperty('--energy-blur', `${2 + energyState.value * 10}px`);
+                systemsStory.style.setProperty('--energy-alpha', String(0.76 + energyState.value * 0.24));
+              }
+            });
+            const flowProgress = gsap.utils.clamp(0, 1, (self.progress - 0.08) / 0.66);
+            if (telemetryTemperature) telemetryTemperature.textContent = String(Math.round(18 + flowProgress * 44));
+            if (telemetryLoad) telemetryLoad.textContent = String(Math.round(flowProgress * 100)).padStart(2, '0');
+            if (telemetryPressure) telemetryPressure.textContent = (0.8 + flowProgress * 3.4).toFixed(1);
           }
         }
       });
 
       systemsTimeline
         .fromTo('[data-systems-image]', { scale: 1 }, { scale: 1.055, ease: 'none' }, 0)
+        .fromTo('[data-systems-image] img', { filter: 'grayscale(1) saturate(.2) contrast(1.18)' }, { filter: 'grayscale(0) saturate(.8) contrast(1.06)', duration: 0.76, ease: 'none' }, 0)
+        .fromTo('[data-systems-grid]', { opacity: 0.68 }, { opacity: 0.12, duration: 0.76, ease: 'none' }, 0)
+        .fromTo('[data-systems-scan]', { x: '-8vw', opacity: 0 }, { x: '108vw', opacity: 0.9, duration: 0.3, ease: 'power1.inOut' }, 0.01)
+        .to('[data-systems-scan]', { opacity: 0, duration: 0.04 }, 0.28)
         .to(systemGlowPaths, { strokeDashoffset: 0, duration: 0.66, ease: 'none' }, 0.08)
         .to(systemPaths, { strokeDashoffset: 0, duration: 0.66, ease: 'none' }, 0.08)
         .from('[data-systems-hud]', { scale: 0.72, rotation: -14, opacity: 0, duration: 0.3, ease: 'power3.out' }, 0.12)
         .from('[data-system-label]', { scale: 0.9, y: 16, opacity: 0, duration: 0.2, stagger: 0.08, ease: 'power2.out' }, 0.25)
+        .to(systemPackets, { opacity: 0.9, duration: 0.06, stagger: 0.01 }, 0.32)
+        .to(systemPackets, { opacity: 0, duration: 0.05 }, 0.78)
         .from('[data-systems-points] article', { y: 42, duration: 0.24, stagger: 0.12, ease: 'power3.out' }, 0.32)
         .from('.systems-coordinate', { opacity: 0, duration: 0.2 }, 0.72)
         .from('[data-system-hub]', { scale: 0, opacity: 0, duration: 0.14, ease: 'back.out(2.4)', transformOrigin: 'center' }, 0.71)
-        .to('[data-hub-wave]', { scale: 3.2, opacity: 0, duration: 0.18, ease: 'power2.out', transformOrigin: 'center' }, 0.76);
+        .to('[data-hub-wave]', { scale: 3.2, opacity: 0, duration: 0.18, ease: 'power2.out', transformOrigin: 'center' }, 0.76)
+        .to('[data-systems-hud]', { scale: 1.06, duration: 0.08, ease: 'power2.out' }, 0.76)
+        .to('[data-systems-hud]', { scale: 1, duration: 0.08, ease: 'power2.inOut' }, 0.84)
+        .to('.systems-heading, [data-systems-hud], [data-system-label], [data-systems-points], .systems-coordinate', { opacity: 0.015, y: -18, duration: 0.05, ease: 'power2.inOut' }, 0.78)
+        .fromTo('[data-systems-payoff]', { autoAlpha: 0, scale: 0.92, y: 24 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.09, ease: 'power3.out' }, 0.83)
+        .to('[data-systems-payoff]', { autoAlpha: 0, scale: 1.04, duration: 0.035, ease: 'power2.in' }, 0.885)
+        .fromTo('[data-systems-wipe]', { scale: 0 }, { scale: 1.45, duration: 0.09, ease: 'power3.in' }, 0.91)
+        .fromTo('[data-systems-next]', { autoAlpha: 0, clipPath: 'circle(0% at 50% 50%)' }, { autoAlpha: 1, clipPath: 'circle(76% at 50% 50%)', duration: 0.08, ease: 'power2.out' }, 0.92);
 
       flowNodes.forEach((node, index) => {
         const path = systemPaths[index];

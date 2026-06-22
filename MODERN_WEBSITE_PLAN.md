@@ -13,6 +13,8 @@ Primary audience: homeowners, commercial customers, industrial customers, contra
 - [x] Generated and optimized three original illustration images; all project usage is visibly labelled as illustration.
 - [x] Added a signature GSAP scroll experience with animated technical schematics, layered plant-room imagery, and responsive fallbacks.
 - [x] Refined the signature sequence with path-bound flow tracers, layered pulse feedback, a higher-quality background encode, and a lower-loss parallax zoom.
+- [x] Directed the signature section as a three-act scroll narrative with live telemetry, system-state transitions, a convergence payoff, and a full-screen circular handoff.
+- [x] Added velocity-reactive energy, persistent route packets, a blueprint scan pass, and a circular reveal into the first featured project.
 - [x] Added a reproducible Browserslist override and restored clean type/build checks.
 - [ ] Obtain company approval for facts, project naming, current certifications, contacts, and operating hours.
 - [ ] Replace generated project imagery with approved authentic company photography.
